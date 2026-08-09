@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<PlayerData>
+	<Level>0</Level>
+	<HP>100</HP>
+	<Gun1>4</Gun1>
+	<Gun2>5</Gun2>
+	<MoveSpeed>4</MoveSpeed>
+	<Weapon_1>SniperRifle</Weapon_1>
+	<Weapon_2>SubmachineGun</Weapon_2>
+	<Money>430</Money>
+</PlayerData>
