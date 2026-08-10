@@ -8,16 +8,17 @@ using UnityEngine.AI;
 
 public class Enemy : Role
 {
-    int score = 0;//·ÖÊı
+    int score = 0;
 
-    private Animator ani;//½ÇÉ«¶¯»­¿ØÖÆÆ÷
-    protected float distance;//µĞÈËÓëÍæ¼Ò¼ä¾àÀë
-    protected GameObject player;//»ñÈ¡Íæ¼Ò
-    protected NavMeshAgent nav;//»ñÈ¡nav×é¼ş
-    protected GameObject enemyModel;//»ñÈ¡½ÇÉ«Ä£ĞÍ
-    protected bool FirePrepare {  get; set; }//ÊÇ·ñ½øĞĞ¿ª»ğĞĞÎª
+    private Animator ani;
+    protected float distance;
+    protected GameObject player;
+    protected NavMeshAgent nav;
+    protected GameObject enemyModel;
+    protected bool FirePrepare { get; set; }
+    private bool deathHandled = false;
 
-    public const float FIRE_DISTANCE = 12f;//¾àÀëÅĞ¶¨£¬¹»¾àÀë¾Í¿ª»ğ
+    public const float FIRE_DISTANCE = 12f;
 
     public int Score
     {
@@ -41,14 +42,30 @@ public class Enemy : Role
         nav = transform.GetComponent<NavMeshAgent>();
         nav.updateRotation = false;
         ani = enemyModel.GetComponent<Animator>();
+        ani.applyRootMotion = false;
     }
 
     protected virtual void Update()
     {
-        nav.SetDestination(player.transform.position);
-        distance = Vector3.Distance(transform.position, player.transform.position);
-        if (IsDead) nav.updatePosition = false;
-        if (!IsDead) Turn();
+        if (!IsDead)
+        {
+            nav.SetDestination(player.transform.position);
+            distance = Vector3.Distance(transform.position, player.transform.position);
+            Turn();
+        }
+        else if (!deathHandled)
+        {
+            deathHandled = true;
+            nav.isStopped = true;
+            nav.updatePosition = false;
+            ani.applyRootMotion = true;
+            StopAllCoroutines();
+            // å¼ºåˆ¶å…³é—­æ‰€æœ‰å­èŠ‚ç‚¹æ­¦å™¨çš„å¼€ç«çŠ¶æ€ï¼Œé˜²æ­¢åç¨‹ä¸­æ–­å gun.IsFire ä»ä¸º true
+            foreach (var gun in GetComponentsInChildren<Gun>())
+            {
+                gun.IsFire = false;
+            }
+        }
         AnimationController();
     }
 
@@ -57,7 +74,6 @@ public class Enemy : Role
         Vector3 turnVector3 = player.transform.position - transform.position;
         Quaternion turnQuaternion = Quaternion.LookRotation(new Vector3(turnVector3.x, 0, turnVector3.z));
         Quaternion targetRotation = turnQuaternion * Quaternion.Euler(0, 50, 0);
-        //¼õÂı×ªÏòËÙ¶È
         enemyModel.transform.rotation = Quaternion.Lerp(enemyModel.transform.rotation, targetRotation, 2 * Time.deltaTime);
     }
 
@@ -71,6 +87,8 @@ public class Enemy : Role
         MaxHp = 0;
         CurHp = 0;
         score = 0;
+        deathHandled = false;
+        if (ani != null) ani.applyRootMotion = false;
     }
 
     private void AnimationController()

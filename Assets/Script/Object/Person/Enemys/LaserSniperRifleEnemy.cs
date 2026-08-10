@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LaserSniperRifleEnemy : Enemy
 {
-    private LaserSniperRifle gun;//»ñÈ¡ÎäÆ÷
+    private LaserSniperRifle gun;//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
 
     // Start is called before the first frame update
     protected override void Start()
@@ -29,15 +29,16 @@ public class LaserSniperRifleEnemy : Enemy
 
     IEnumerator SpinerFire()
     {
-        //µĞÈËÍ£Ö¹ÒÆ¶¯£¬½øĞĞÃé×¼
+        //ï¿½ï¿½ï¿½ï¿½Í£Ö¹ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¼
         nav.isStopped = true;
         yield return new WaitForSeconds(3f);
-        //¿ª»ğ
+        //ï¿½ï¿½ï¿½ï¿½
         gun.IsFire = true;
         yield return new WaitForSeconds(0.1f);
         gun.IsFire = false;
         FirePrepare = false;
-        nav.isStopped = false;
+        // æ­»äº¡åä¸å†æ¢å¤ç§»åŠ¨ï¼Œé˜²æ­¢è¦†ç›–æ­»äº¡åŠ¨ç”»çš„å†»ç»“æ•ˆæœ
+        if (!IsDead) nav.isStopped = false;
     }
 
     public override void Take()
