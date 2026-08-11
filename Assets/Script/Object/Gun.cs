@@ -58,13 +58,22 @@ public class Gun : MonoBehaviour,IReusable
     }
 
     /// <summary>
-    /// 计算从 firePoint 指向鼠标地面命中点的方向
+    /// 计算子弹发射方向（玩家指向鼠标地面点，敌人指向玩家位置）
     /// </summary>
     protected Vector3 GetAimDirection(Transform firePoint)
     {
-        Player player = GameObject.Find("Player(Clone)").GetComponent<Player>();
-        Vector3 target = player.AimTarget;
-        return (target - firePoint.position).normalized;
+        Vector3 target;
+        if (User == "Player")
+        {
+            target = GameObject.Find("Player(Clone)").GetComponent<Player>().AimTarget;
+        }
+        else
+        {
+            target = GameObject.Find("Player(Clone)").transform.position;
+        }
+        Vector3 direction = target - firePoint.position;
+        direction.y = 0;
+        return direction.normalized;
     }
 
     public void Back()
