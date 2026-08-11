@@ -11,27 +11,24 @@ using UnityEngine.Networking;
 public class Utils
 {
     static string path = Application.dataPath + @"/Resources/PlayerData/PlayerData.xml";
-    //¼ÓÔØ½ÇÉ«Êı¾İ,Ö±½Ó½«ĞÅÏ¢·µ»Øµ½playerInfoÖĞ
+    //åŠ è½½è§’è‰²æ•°æ®ï¼Œç›´æ¥è¯»å–åˆ° playerInfo ä¸­
     public static void LoadPlayer(ref PlayerInfo playerInfo)
     {
-        //¼ÓÔØÅäÖÃ±íÎÄ¼ş
+        //åŠ è½½XMLæ–‡ä»¶
         XmlDocument doc = new XmlDocument();
         doc.Load(path);
-        //¶ÁÈ¡»ù´¡ĞÅÏ¢
-        //»ñµÃ¸ù½Úµã
+        //è·å–æ ¹èŠ‚ç‚¹
         XmlElement root = doc.DocumentElement;
-        //»ñÈ¡ĞÅÏ¢
+        //è¯»å–ç©å®¶ä¿¡æ¯
         playerInfo.Level = int.Parse(root.SelectSingleNode("Level").InnerText);
         playerInfo.HP= int.Parse(root.SelectSingleNode("HP").InnerText);
         playerInfo.GunID_1 = int.Parse(root.SelectSingleNode("Gun1").InnerText);
         playerInfo.GunID_2 = int.Parse(root.SelectSingleNode("Gun2").InnerText);
         playerInfo.MoveSpeed = float.Parse(root.SelectSingleNode("MoveSpeed").InnerText);
-        playerInfo.Weapon_1 = root.SelectSingleNode("Weapon_1").InnerText;
-        playerInfo.Weapon_2 = root.SelectSingleNode("Weapon_2").InnerText;
         playerInfo.Money = int.Parse(root.SelectSingleNode("Money").InnerText);
     }
 
-    //±£´æÍæ¼Ò×°±¸Êı¾İ£¬ÔÚ¾üĞµ¿âµ÷ÓÃ
+    //ä¿å­˜ç©å®¶æ•°æ®åˆ° XML
     public static void SavePlayerInfo(PlayerInfo playerInfo)
     {
         StringBuilder sb = new StringBuilder();
@@ -43,8 +40,6 @@ public class Utils
         sb.Append(string.Format("\t<Gun1>{0}</Gun1>\n", playerInfo.GunID_1));
         sb.Append(string.Format("\t<Gun2>{0}</Gun2>\n", playerInfo.GunID_2));
         sb.Append(string.Format("\t<MoveSpeed>{0}</MoveSpeed>\n", playerInfo.MoveSpeed));
-        sb.Append(string.Format("\t<Weapon_1>{0}</Weapon_1>\n", playerInfo.Weapon_1));
-        sb.Append(string.Format("\t<Weapon_2>{0}</Weapon_2>\n", playerInfo.Weapon_2));
         sb.Append(string.Format("\t<Money>{0}</Money>\n", playerInfo.Money));
 
         sb.Append("</PlayerData>");

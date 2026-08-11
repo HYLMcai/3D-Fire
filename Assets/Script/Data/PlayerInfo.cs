@@ -5,12 +5,10 @@ using UnityEngine;
 public class PlayerInfo
 {
     public int ID;
-    public int Level;//Íæ¼ÒµÈ¼¶£¨¾ö¶¨ÉËº¦£©
-    public int HP;//ÑªÁ¿
-    public int GunID_1;//×°±¸µÄÇ¹
-    public int GunID_2;//×°±¸µÄÇ¹
-    public float MoveSpeed;//ÒÆËÙ
-    public string Weapon_1;//ÎäÆ÷1
-    public string Weapon_2;//ÎäÆ÷2
-    public int Money;//Ç®
+    public int Level;       //ç©å®¶ç­‰çº§ï¼ˆå½±å“ä¼¤å®³ï¼‰
+    public int HP;          //è¡€é‡
+    public int GunID_1;     //è£…å¤‡çš„æ­¦å™¨1 ID
+    public int GunID_2;     //è£…å¤‡çš„æ­¦å™¨2 ID
+    public float MoveSpeed; //ç§»åŠ¨é€Ÿåº¦
+    public int Money;       //é‡‘é’±
 }
