@@ -5,23 +5,23 @@ using UnityEngine;
 
 public class Player : Role
 {
-    
-    private GameObject playerModel;//½ÇÉ«Ä£ĞÍ
-    private Animator ani;//½ÇÉ«¶¯»­¿ØÖÆÆ÷
-    private GameObject weapon;//»ñÈ¡ÎäÆ÷
-    private PlayerInfo playerInfo = new PlayerInfo();
-    private GameObject usingWeapon;//Ê¹ÓÃÖĞµÄÎäÆ÷
-    private GameObject weapon1;//Ò»ºÅÎäÆ÷
-    private GameObject weapon2;//¶şºÅÎäÆ÷
-    
-    //¶¯»­¿ØÖÆ²¿·Ö
-    private bool isMoving = false;//½ÇÉ«ÒÆ¶¯×´Ì¬
 
-    private List<int> GunID = new List<int>();//×°±¸Ç¹
-    private int Level { get; set; }//ÉËº¦µÈ¼¶
-    private float Speed { get; set; }//½ÇÉ«ÒÆ¶¯ËÙ¶È
-    private float FireSpeed { get; set; }//½ÇÉ«¿ª»ğÒÆ¶¯ËÙ¶È
-    public bool IsFireing { get; set; }//½ÇÉ«¿ª»ğ×´Ì¬
+    private GameObject playerModel;//è§’è‰²æ¨¡å‹
+    private Animator ani;//è§’è‰²åŠ¨ç”»æ§åˆ¶å™¨
+    private GameObject weapon;//æ­¦å™¨æŒ‚è½½ç‚¹
+    private PlayerInfo playerInfo = new PlayerInfo();
+    private GameObject usingWeapon;//å½“å‰ä½¿ç”¨çš„æ­¦å™¨
+    private GameObject weapon1;//ä¸€å·æ­¦å™¨
+    private GameObject weapon2;//äºŒå·æ­¦å™¨
+
+    //è§’è‰²æ§åˆ¶å‚æ•°
+    private bool isMoving = false;//è§’è‰²ç§»åŠ¨çŠ¶æ€
+
+    private List<int> GunID = new List<int>();//è£…å¤‡çš„æ­¦å™¨IDåˆ—è¡¨
+    private int Level { get; set; }//ä¼¤å®³ç­‰çº§
+    private float Speed { get; set; }//è§’è‰²ç§»åŠ¨é€Ÿåº¦
+    private float FireSpeed { get; set; }//è§’è‰²å¼€ç«ç§»åŠ¨é€Ÿåº¦
+    public bool IsFireing { get; set; }//è§’è‰²å¼€ç«çŠ¶æ€
 
     // Start is called before the first frame update
     void Start()
@@ -41,33 +41,36 @@ public class Player : Role
         PlayerAnimationController();
         ChangeWeapon();
     }
-    
+
     public void Load(PlayerInfo playerinfo)
     {
-        this.Level = playerinfo.Level;//³õÖµÎª0 Ã¿¼¶1
-        this.MaxHp = playerinfo.HP;//³õÖµ100 Ã¿¼¶10
+        this.Level = playerinfo.Level;//åˆå§‹å€¼0 å‡çº§+1
+        this.MaxHp = playerinfo.HP;//åˆå§‹å€¼100 å‡çº§+10
         this.CurHp = this.MaxHp;
-        this.Speed = playerinfo.MoveSpeed;//³õÖµÎª3 Ã¿¼¶0.2
+        this.Speed = playerinfo.MoveSpeed;//åˆå§‹å€¼ä¸º3 å‡çº§+0.2
         this.FireSpeed = this.Speed - 1;
         this.GunID.Add(playerinfo.GunID_1);
         this.GunID.Add(playerinfo.GunID_2);
 
-        this.weapon1 = Game.GetInstance().ObjectPool.Take("Weapons/" + playerinfo.Weapon_1);//Ò»ºÅÎ»ÎäÆ÷¼ÓÔØ
-        this.weapon2 = Game.GetInstance().ObjectPool.Take("Weapons/" + playerinfo.Weapon_2);//¶şºÅÎ»ÎäÆ÷¼ÓÔØ
-        //·ÅÈëPlayerµÄÎäÆ÷²¿·Ö
+        // é€šè¿‡ GunID ä» StaticData åæŸ¥ PrefabName æ¥åŠ è½½æ­¦å™¨
+        string prefabName1 = Game.GetInstance().StaticData.GetGunInfo(playerinfo.GunID_1).PrefabName;
+        string prefabName2 = Game.GetInstance().StaticData.GetGunInfo(playerinfo.GunID_2).PrefabName;
+        this.weapon1 = Game.GetInstance().ObjectPool.Take("Weapons/" + prefabName1);
+        this.weapon2 = Game.GetInstance().ObjectPool.Take("Weapons/" + prefabName2);
+        //å°†æ­¦å™¨æŒ‚è½½åˆ°Playerçš„æ­¦å™¨èŠ‚ç‚¹ä¸‹
         weapon1.transform.parent = weapon.transform;
         weapon2.transform.parent = weapon.transform;
         weapon1.transform.localPosition = Vector3.zero;
         weapon1.transform.localEulerAngles = Vector3.zero;
         weapon2.transform.localPosition = Vector3.zero;
         weapon2.transform.localEulerAngles = Vector3.zero;
-        //¼ÓÔØÎäÆ÷Êı¾İ
+        //åˆå§‹åŒ–æ­¦å™¨å±æ€§
         Gun gun1 = weapon1.GetComponent<Gun>();
         Gun gun2 = weapon2.GetComponent<Gun>();
         gun1.Load(Level, GunID[0], "Player");
         gun2.Load(Level, GunID[1], "Player");
         weapon2.SetActive(false);
-        this.usingWeapon = this.weapon1;//·Åµ½ÊÖÉÏ
+        this.usingWeapon = this.weapon1;//é»˜è®¤æŒæœ‰ä¸€å·ä½æ­¦å™¨
     }
 
     private void Move()
@@ -86,7 +89,7 @@ public class Player : Role
             transform.Translate(playerMove * Speed * Time.deltaTime);
             IsFireing = false;
         }
-        
+
         isMoving = horizontal != 0 || vertical != 0;
         if (isMoving)
         {

@@ -63,7 +63,7 @@ Unity 2022.3.62f3c1 3D 第三人称射击游戏。玩家在科幻城市中与多
 ### 数据层（`Assets/Script/Data/`）
 
 - **`StaticData`** —— 单例，持有硬编码的 `AmorInfo`、`EnemyInfo`、`GunInfo` 字典。定义了所有敌人类型（ID、血量、赏金、职业）、武器类型（ID、基础攻击、射速）以及弹药类型（ID、自动回收时间）。通过 `StaticData.GetInstance()` 访问。
-- **`PlayerInfo`** —— 纯数据类：Level、HP、GunID_1/2、MoveSpeed、Weapon_1/2（预制体名字符串）、Money。
+- **`PlayerInfo`** —— 纯数据类：Level、HP、GunID_1/2、MoveSpeed、Money。
 - **`Utils`** —— 静态工具类。`LoadPlayer(ref PlayerInfo)` 通过 `XmlDocument` 从 `Resources/PlayerData/PlayerData.xml` 读取玩家数据。`SavePlayerInfo(PlayerInfo)` 写回同一 XML 文件。
 
 ### 单例模式（`Assets/Script/Singleton/Singleton.cs`）
