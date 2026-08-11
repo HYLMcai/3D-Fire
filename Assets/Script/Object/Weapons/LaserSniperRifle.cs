@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LaserSniperRifle : Gun
 {
-    Transform FirePoint;//×Óµ¯Éú³Éµã
+    Transform FirePoint;//ï¿½Óµï¿½ï¿½ï¿½ï¿½Éµï¿½
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +25,7 @@ public class LaserSniperRifle : Gun
         GameObject go = Game.GetInstance().ObjectPool.Take("Amors/Laser");
         Laser laser = go.GetComponent<Laser>();
         go.transform.position = FirePoint.transform.position;
-        go.transform.rotation = FirePoint.transform.rotation;
+        go.transform.rotation = Quaternion.LookRotation(GetAimDirection(FirePoint));
         laser.Load(Level, 1, BaseAttack);
     }
 }

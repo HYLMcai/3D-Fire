@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour,IReusable
 {
-    private float FireSpeed { get; set; }//ÉäËÙ(¿ª»ğ¼ä¸ô)
-    protected int BaseAttack { get; set; }//»ù´¡ÉËº¦
-    private string User { get; set; }//ÓÃÕâ°ÑÎäÆ÷µÄ¶ÔÏó
-    protected int Level { get; set; }//µÈ¼¶
-    public bool IsFire { get; set; }//µĞÈË¿ª»ğÅĞ¶Ï
-    private float time = 0;       //¸ºÔğ¿ª»ğÊ±¼ä¼ÆËã
+    private float FireSpeed { get; set; }//ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
+    protected int BaseAttack { get; set; }//ï¿½ï¿½ï¿½ï¿½ï¿½Ëºï¿½
+    private string User { get; set; }//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½
+    protected int Level { get; set; }//ï¿½È¼ï¿½
+    public bool IsFire { get; set; }//ï¿½ï¿½ï¿½Ë¿ï¿½ï¿½ï¿½ï¿½Ğ¶ï¿½
+    private float time = 0;       //ï¿½ï¿½ï¿½ğ¿ª»ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½
 
 
     // Start is called before the first frame update
@@ -33,7 +33,7 @@ public class Gun : MonoBehaviour,IReusable
         }
         else
         {
-            //µĞÈË¿ª»ğÂß¼­
+            //ï¿½ï¿½ï¿½Ë¿ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
             if (time >= FireSpeed && IsFire)
             {
                 Shooting();
@@ -54,7 +54,17 @@ public class Gun : MonoBehaviour,IReusable
 
     public virtual void Shooting()
     {
-        //×ÓÀàÖØĞ´
+        //å­ç±»é‡å†™
+    }
+
+    /// <summary>
+    /// è®¡ç®—ä» firePoint æŒ‡å‘é¼ æ ‡åœ°é¢å‘½ä¸­ç‚¹çš„æ–¹å‘
+    /// </summary>
+    protected Vector3 GetAimDirection(Transform firePoint)
+    {
+        Player player = GameObject.Find("Player(Clone)").GetComponent<Player>();
+        Vector3 target = player.AimTarget;
+        return (target - firePoint.position).normalized;
     }
 
     public void Back()

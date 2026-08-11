@@ -22,6 +22,7 @@ public class Player : Role
     private float Speed { get; set; }//角色移动速度
     private float FireSpeed { get; set; }//角色开火移动速度
     public bool IsFireing { get; set; }//角色开火状态
+    public Vector3 AimTarget { get; private set; }//鼠标瞄准的地面位置，供 Gun 计算发射方向
 
     // Start is called before the first frame update
     void Start()
@@ -114,6 +115,8 @@ public class Player : Role
             Vector3 turnVector3 = hit.point - transform.position;
             Quaternion turnQuaternion = Quaternion.LookRotation(new Vector3(turnVector3.x, 0, turnVector3.z));
             playerModel.transform.rotation = turnQuaternion * Quaternion.Euler(0, 50, 0);
+            // 保存鼠标地面命中点，供 Gun 计算子弹实际发射方向
+            AimTarget = hit.point;
         }
     }
 
