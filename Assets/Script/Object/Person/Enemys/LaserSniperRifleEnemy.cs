@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LaserSniperRifleEnemy : Enemy
 {
-    private LaserSniperRifle gun;//��ȡ����
+    private LaserSniperRifle gun;//获取武器
 
     // Start is called before the first frame update
     protected override void Start()
@@ -29,10 +29,12 @@ public class LaserSniperRifleEnemy : Enemy
 
     IEnumerator SpinerFire()
     {
-        //����ֹͣ�ƶ���������׼
+        //狙击手停止移动，开始瞄准
         nav.isStopped = true;
         yield return new WaitForSeconds(3f);
-        //����
+        //锁定当前玩家位置，0.1 秒后朝锁定位置开火
+        gun.AimTargetOverride = player.transform.position;
+        yield return new WaitForSeconds(0.1f);
         gun.IsFire = true;
         yield return new WaitForSeconds(0.1f);
         gun.IsFire = false;

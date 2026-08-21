@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MachineGunEnemy : Enemy
 {
-    private MachineGun gun;//��ȡ����
+    private MachineGun gun;//获取武器
 
     // Start is called before the first frame update
     protected override void Start()
@@ -28,6 +28,9 @@ public class MachineGunEnemy : Enemy
 
     IEnumerator GunnerFire()
     {
+        // 锁定当前玩家位置，0.1 秒后朝锁定位置开火
+        gun.AimTargetOverride = player.transform.position;
+        yield return new WaitForSeconds(0.1f);
         gun.IsFire = true;
         yield return new WaitForSeconds(3f);
         gun.IsFire = false;
