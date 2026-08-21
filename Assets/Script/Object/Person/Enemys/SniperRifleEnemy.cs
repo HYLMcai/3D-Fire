@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SniperRifleEnemy : Enemy
 {
-    private SniperRifle gun;//��ȡ����
+    private SniperRifle gun;//获取武器
 
     // Start is called before the first frame update
     protected override void Start()
@@ -13,7 +13,7 @@ public class SniperRifleEnemy : Enemy
         base.Start();
         gun = transform.Find("Model/Weapon/SniperRifle").GetComponent<SniperRifle>();
         gun.Load(0, 4, "Enemy");
-        
+
     }
 
     // Update is called once per frame
@@ -29,14 +29,16 @@ public class SniperRifleEnemy : Enemy
 
     IEnumerator SpinerFire()
     {
-        //����ֹͣ�ƶ���������׼
+        //狙击手停止移动，开始瞄准
         nav.isStopped = true;
         yield return new WaitForSeconds(3f);
-        //����
+        //锁定当前玩家位置，0.1 秒后朝锁定位置开火
+        gun.AimTargetOverride = player.transform.position;
+        yield return new WaitForSeconds(0.1f);
         gun.IsFire = true;
         yield return new WaitForSeconds(0.1f);
         gun.IsFire = false;
-        FirePrepare= false;
+        FirePrepare = false;
         // 死亡后不再恢复移动，防止覆盖死亡动画的冻结效果
         if (!IsDead) nav.isStopped = false;
     }

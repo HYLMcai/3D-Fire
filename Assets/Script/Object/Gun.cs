@@ -5,18 +5,19 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour,IReusable
 {
-    private float FireSpeed { get; set; }//����(������)
-    protected int BaseAttack { get; set; }//�����˺�
-    private string User { get; set; }//����������Ķ���
-    protected int Level { get; set; }//�ȼ�
-    public bool IsFire { get; set; }//���˿����ж�
-    private float time = 0;       //���𿪻�ʱ�����
+    private float FireSpeed { get; set; }//射速（冷却时间）
+    protected int BaseAttack { get; set; }//基础伤害
+    private string User { get; set; }//使用者（Player 或 Enemy）
+    protected int Level { get; set; }//等级
+    public bool IsFire { get; set; }//开火开关
+    public Vector3? AimTargetOverride { get; set; }//敌人锁定目标点，优先级高于实时玩家位置
+    private float time = 0;       //冷却计时
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -33,7 +34,7 @@ public class Gun : MonoBehaviour,IReusable
         }
         else
         {
-            //���˿����߼�
+            //敌人开火逻辑
             if (time >= FireSpeed && IsFire)
             {
                 Shooting();
@@ -58,7 +59,7 @@ public class Gun : MonoBehaviour,IReusable
     }
 
     /// <summary>
-    /// 计算子弹发射方向（玩家指向鼠标地面点，敌人指向玩家位置）
+    /// 计算子弹发射方向（玩家指向鼠标地面点，敌人优先用锁定目标否则指向玩家位置）
     /// </summary>
     protected Vector3 GetAimDirection(Transform firePoint)
     {
@@ -69,7 +70,9 @@ public class Gun : MonoBehaviour,IReusable
         }
         else
         {
-            target = GameObject.Find("Player(Clone)").transform.position;
+            // 敌人优先使用锁定目标，否则用实时玩家位置
+            target = AimTargetOverride ?? GameObject.Find("Player(Clone)").transform.position;
+            AimTargetOverride = null;
         }
         Vector3 direction = target - firePoint.position;
         direction.y = 0;
@@ -84,6 +87,6 @@ public class Gun : MonoBehaviour,IReusable
 
     public void Take()
     {
-        
+
     }
 }
