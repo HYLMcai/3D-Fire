@@ -2263,6 +2263,7 @@ GameObject:
   - component: {fileID: 8643504645937841098}
   - component: {fileID: 2674682861393329457}
   - component: {fileID: -7682023955334209703}
+  - component: {fileID: 4058321701686769220}
   m_Layer: 0
   m_Name: LaserGunEnemy
   m_TagString: Person
@@ -2370,6 +2371,27 @@ CapsuleCollider:
   m_Height: 1.9306642
   m_Direction: 1
   m_Center: {x: 0, y: 0.89719826, z: 0}
+--- !u!95 &4058321701686769220
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4551420418038315409}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4568077534689981856
 GameObject:
   m_ObjectHideFlags: 0

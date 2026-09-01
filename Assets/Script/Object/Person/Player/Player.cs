@@ -13,6 +13,8 @@ public class Player : Role
     private GameObject usingWeapon;//当前使用的武器
     private GameObject weapon1;//一号武器
     private GameObject weapon2;//二号武器
+    private Transform leftHandTarget;//左手 IK 目标
+    private Transform rightHandTarget;//右手 IK 目标
 
     //角色控制参数
     private bool isMoving = false;//角色移动状态
@@ -30,6 +32,8 @@ public class Player : Role
         playerModel = transform.Find("Model").gameObject;
         ani = playerModel.GetComponent<Animator>();
         weapon = transform.Find("Model/Weapon").gameObject;
+        leftHandTarget = transform.Find("Model/LeftArmRig/LeftTarget");
+        rightHandTarget = transform.Find("Model/RightArmRig/RightTarget");
         Utils.LoadPlayer(ref playerInfo);
         Load(playerInfo);
     }
@@ -41,6 +45,7 @@ public class Player : Role
         Turn();
         PlayerAnimationController();
         ChangeWeapon();
+        AlignHandsToGun();//最后执行，覆盖双手 IK 目标到当前武器的握持锚点
     }
 
     public void Load(PlayerInfo playerinfo)
@@ -141,6 +146,28 @@ public class Player : Role
         ani.SetBool("Moving", isMoving);
         ani.SetBool("Fireing", IsFireing);
         ani.SetBool("Dead", IsDead);
+    }
+
+    /// <summary>
+    /// 每帧把双手 IK 目标对齐到当前武器上的握持锚点，让手自动贴枪
+    /// </summary>
+    private void AlignHandsToGun()
+    {
+        if (usingWeapon == null) return;
+        Transform leftGrip = usingWeapon.transform.Find("LeftHand");
+        Transform rightGrip = usingWeapon.transform.Find("RightHand");
+        // 左手锚点存在且左手 IK 目标已获取时，对齐位置与旋转
+        if (leftGrip != null && leftHandTarget != null)
+        {
+            leftHandTarget.position = leftGrip.position;
+            leftHandTarget.rotation = leftGrip.rotation;
+        }
+        // 右手锚点存在且右手 IK 目标已获取时，对齐位置与旋转
+        if (rightGrip != null && rightHandTarget != null)
+        {
+            rightHandTarget.position = rightGrip.position;
+            rightHandTarget.rotation = rightGrip.rotation;
+        }
     }
 
     public override void Take()
