@@ -60,10 +60,11 @@ public class Enemy : Role
             nav.updatePosition = false;
             ani.applyRootMotion = true;
             StopAllCoroutines();
-            // 强制关闭所有子节点武器的开火状态，防止协程中断后 gun.IsFire 仍为 true
+            // 强制关闭所有子节点武器的开火状态，防止协程中断后 gun.IsFire 仍为 true；同时隐藏枪械，避免死亡后枪浮空
             foreach (var gun in GetComponentsInChildren<Gun>())
             {
                 gun.IsFire = false;
+                gun.gameObject.SetActive(false);
             }
         }
         AnimationController();
@@ -89,6 +90,11 @@ public class Enemy : Role
         score = 0;
         deathHandled = false;
         if (ani != null) ani.applyRootMotion = false;
+        // 复活时重新显示枪械（死亡时已隐藏，需含未激活对象）
+        foreach (var gun in GetComponentsInChildren<Gun>(true))
+        {
+            gun.gameObject.SetActive(true);
+        }
     }
 
     private void AnimationController()
