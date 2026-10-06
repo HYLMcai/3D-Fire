@@ -144,7 +144,8 @@ public class Player : Role
     private void PlayerAnimationController()
     {
         ani.SetBool("Moving", isMoving);
-        ani.SetBool("Fireing", IsFireing);
+        // 移动开火时保持跑步姿势，不切换到站立开火姿势（开火由 Gun 的 Fire1 判定驱动，不受此动画参数影响）
+        ani.SetBool("Fireing", IsFireing && !isMoving);
         ani.SetBool("Dead", IsDead);
     }
 
